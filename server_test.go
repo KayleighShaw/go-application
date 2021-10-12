@@ -17,7 +17,15 @@ func (s *StubPlayerStore) GetPlayerScore(name string) int {
 }
 
 func TestGETPlayers(t *testing.T) {
-	server := &PlayerServer{}
+	// this is creating a store for our tests
+	store := StubPlayerStore{
+		map[string]int{
+			"Pepper": 20,
+			"Floyd":  10,
+		},
+	}
+	// we're then passing the store and sending it into our server
+	server := &PlayerServer{&store}
 
 	t.Run("returns Pepper's score", func(t *testing.T) {
 		request := newGetScoreRequest("Pepper")
